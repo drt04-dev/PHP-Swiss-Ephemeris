@@ -1,5 +1,19 @@
 # PHP Extension for Swiss Ephemeris
 
+## IMPORTANT: PLEASE READ
+
+**2026-03-24**
+
+This repository has been transferred from its original location courtesy of @cyjoelchen.
+
+If you're using the old repository URL in any of your workflows, you should change it immediately to:
+
+```
+kevindecapite/php-sweph.git
+```
+
+This is the new home for this extension where it will be maintained indefinitely. Contributions are welcome!
+
 ## Introduction
 `php-sweph` is a PHP extension to Astrodienst Swiss Ephemeris library. It's statically linked with libswe.a to implement one-to-one, C-to-PHP function mapping, no external binary executable required.
 
