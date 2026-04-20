@@ -5835,7 +5835,7 @@ See Github repository https://github.com/aloistr/perl-sweph
 
 ## PHP
 
-See Github repository https://github.com/cyjoelchen/php-sweph
+See Github repository https://github.com/kevindecapite/php-sweph
 
 ## Python 
 
