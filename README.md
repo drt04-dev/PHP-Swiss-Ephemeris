@@ -43,10 +43,10 @@ Follow the steps to build the latest version of this extension.
 Make sure `php-dev` has installed already.
 
 _If you are on a Mac and use or want to use Homebrew, please see:_
-[Installation on macOS Big Sur](https://github.com/cyjoelchen/php-sweph/wiki/Install-on-macOS-Big-Sur.)
+[Installation on macOS Big Sur](https://github.com/kevindecapite/php-sweph/wiki/Install-on-macOS-Big-Sur)
 
 ```
-git clone -b 4.0.12 https://github.com/cyjoelchen/php-sweph.git
+git clone -b 4.0.11 https://github.com/kevindecapite/php-sweph.git
 cd php-sweph
 phpize
 ./configure
@@ -67,7 +67,7 @@ You are all set!
 
 ## Troubleshooting
 Please see the Wiki for additional details on troubleshooting the installation of this extension:
-- https://github.com/cyjoelchen/php-sweph/wiki
+- https://github.com/kevindecapite/php-sweph/wiki
 
 ## PhpStorm IDE Support
 A plugin repository is maintained for this extension, allowing auto-complete and static analysis in PhpStorm for all Swiss Ephemeris methods:
@@ -116,7 +116,7 @@ _Documentation is included in this repository here:_
 /doc/doc.html
 /doc/doc.md
 ```
-[Read it here on GitHub &raquo;](https://github.com/cyjoelchen/php-sweph/blob/master/doc/doc.md)
+[Read it here on GitHub &raquo;](https://github.com/kevindecapite/php-sweph/blob/master/doc/doc.md)
 
 ## Example
 
