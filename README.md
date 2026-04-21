@@ -43,7 +43,7 @@ Follow the steps to build the latest version of this extension.
 Make sure `php-dev` has installed already.
 
 _If you are on a Mac and use or want to use Homebrew, please see:_
-[Installation on macOS Big Sur](https://github.com/kevindecapite/php-sweph/wiki/Install-on-macOS-Big-Sur.)
+[Installation on macOS Big Sur](https://github.com/kevindecapite/php-sweph/wiki/Install-on-macOS-Big-Sur)
 
 ```
 git clone -b 4.0.11 https://github.com/kevindecapite/php-sweph.git
