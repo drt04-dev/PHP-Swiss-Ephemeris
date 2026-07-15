@@ -186,3 +186,119 @@ drt04-dev/php-swiss-ephemeris/
 └── README.md                  # Diese Dokumentation
 ```
 
+
+# Erweiterte Information
+
+## Integration in Symfony 8.1+
+
+Da unser SDK komplett objektorientiert und typsicher aufgebaut ist, lässt es sich nahtlos als Service in moderne Symfony-Projekte integrieren.
+
+### 1. SDK als Service registrieren
+
+Um den Ephemeriden-Pfad beim Bootstrapping der Symfony-Anwendung automatisch zu konfigurieren, registrieren wir die `Ephemeris` im Dependency Injection Container. 
+
+Füge folgende Konfiguration in deine `config/services.yaml` ein:
+
+```yaml
+services:
+    # ... standardmäßige Konfigurationen ...
+
+    # Das SDK als Service registrieren und Pfad automatisch setzen
+    Sweph\Ephemeris:
+        public: false
+        calls:
+            # Setzt das Ephemeriden-Verzeichnis (z.B. im Symfony-Projekt unter %kernel.project_dir%/var/ephe)
+            - [setEphePath, ['%kernel.project_dir%/var/ephe']]
+```
+### 2. Nutzung im Controller (Autowiring)
+Jetzt kannst du die **Ephemeris** ganz einfach per Autowiring in jeden Controller, 
+Command oder Service injizieren lassen:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Attribute\Route;
+use Sweph\Ephemeris;
+use Sweph\Enums\Planet;
+use DateTimeImmutable;
+
+class AstrologyController extends AbstractController
+{
+    #[Route('/api/planet/{name}', name: 'app_planet_position', methods: ['GET'])]
+    public function getPosition(string $name, Ephemeris$ephemeris): JsonResponse
+    {
+        // Planet aus Pfad-Parameter mappen
+        $planetEnum = match (strtolower($name)) {
+            'sun' => Planet::SUN,
+            'moon' => Planet::MOON,
+            'mars' => Planet::MARS,
+            default => null,
+        };
+
+        if ($planetEnum === null) {
+            return $this->json(['error' => 'Planet nicht unterstützt'], 400);
+        }
+
+        // Berechnung durchführen
+        $position = $ephemeris->getPlanetPosition($planetEnum, new DateTimeImmutable('now'));
+
+        return $this->json([
+            'planet' => $planetEnum->name,
+            'longitude' => $position->longitude,
+            'latitude' => $position->latitude,
+            'is_retrograde' => $position->isRetrograde(),
+        ]);
+    }
+}
+```
+
+### 3. CLI Command erstellen (Symfony Console)
+In Symfony 8.1 kannst du dank der neuen Method-Based Commands oder 
+klassischen Commands extrem schnell CLI-Skripte für Berechnungen schreiben:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Command;
+
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Sweph\Ephemeris;
+use Sweph\Enums\Planet;
+use DateTimeImmutable;
+
+#[AsCommand(
+    name: 'app:calculate-sun',
+    description: 'Berechnet die aktuelle Position der Sonne.',
+)]
+class CalculateSunCommand extends Command
+{
+    public function __construct(
+        private readonly Ephemeris $ephemeris
+    ) {
+        parent::__construct();
+    }
+
+    protected function execute(InputInterface $input, OutputInterface$output): int
+    {
+        $io = new SymfonyStyle($input,$output);
+        
+        $position =$this->ephemeris->getPlanetPosition(Planet::SUN, new DateTimeImmutable('now'));
+        
+        $io->success(sprintf('Die Sonne steht aktuell auf \%.2f° im Tierkreis.',$position->longitude));
+        
+        return Command::SUCCESS;
+    }
+}
+```

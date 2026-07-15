@@ -1,0 +1,51 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [ "main", "master", "develop" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivamurthyu/setup-php@v2
+      with:
+        php-version: '8.4'
+        coverage: none
+        tools: composer:v2
+
+    - name: Install Build Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential php8.4-dev
+
+    - name: Compile and Install swephp Extension
+      run: |
+        cd ext/
+        phpize
+        ./configure --enable-swephp
+        make
+        sudo make install
+        echo "extension=swephp.so" | sudo tee $(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||")
+
+    - name: Verify PHP Extension Installation
+      run: php -m | grep swephp
+
+    - name: Install Composer Dependencies
+      run: composer install --no-ansi --no-interaction --no-scripts --progress=plain --prefer-dist
+
+    - name: Make Download Script Executable
+      run: chmod +x bin/download-ephe.sh
+
+    - name: Download Ephemeris Files
+      run: ./bin/download-ephe.sh
+
+    - name: Run Test Suite
+      run: ./vendor/bin/phpunit
