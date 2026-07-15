@@ -1,0 +1,11 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    volumes:
+      - .:/app
+    working_dir: /app
+    tty: true                  # Hält die Standard-Eingabe offen
+    stdin_open: true           # Erlaubt interaktive Shells
+    command: tail -f /dev/null # Hält den Container unendlich im Hintergrund aktiv

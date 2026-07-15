@@ -1,0 +1,4 @@
+ARG_ENABLE("sweph", "Swiss Ephemeris support", "no");
+if (PHP_SWEPH != "no") {
+    EXTENSION("sweph", "sweph.c", true);
+}

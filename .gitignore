@@ -1,36 +1,31 @@
-# IntelliJ / PhpStorm project directory.
+# --- PHP / Composer ---
+/vendor/
+.phpunit.result.cache
+.phpunit.cache/
+.php-cs-fixer.cache
+
+# --- Swiss Ephemeris Datendateien ---
+# Die astronomischen Ephemeriden-Dateien (.se1) sind sehr groß und
+# sollten über das Installations-Skript geladen, aber nicht eingecheckt werden.
+/ephe/*.se1
+/ephe/*.se2
+/ephe/*.se4
+
+# --- IDEs und Editoren ---
+# PhpStorm (dein Editor)
+.idea/
+*.iml
+modules.xml
+workspace.xml
+
+# VS Code
+.vscode/
+.history/
+*.code-workspace
+
+# --- Betriebssysteme ---
 .DS_Store
-.idea
-*.swp
-.gdb_history
-pod2htmd.tmp
-tests/*.php
-tests/*.diff
-tests/*.exp
-tests/*.out
-tests/*.log
-tests/*.sh
-tests/*.swp
-sweph/src/*.o
-sweph/src/libswe.a
-sweph/src/swetest
-modules
-sweph*.la
-sweph*.lo
-Mak*
-.libs/
-build/
-ac*
-auto*
-libtool
-missing
-mk*
-run-test*
-!.github/workflows/run-tests.yml
-!config.m4
-config*
-install-sh
-ltmain.sh
-fixtest
-utility/PHP-Parser-4.12.0
-utility/gen_stub.php
+Thumbs.db
+
+# --- Docker & Lokale Konfiguration ---
+.env
